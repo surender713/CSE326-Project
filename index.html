@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Track laboratory equipment faults, repairs, technician assignments, and maintenance reports.">
-  <meta name="keywords" content="laboratory maintenance, equipment repair, maintenance tickets, lab safety">
+  <meta name="keywords" content="laboratory maintenance, equipment repair, maintenance tickets">
   <title>Laboratory Maintenance Reporting System</title>
   <link rel="stylesheet" href="styles.css">
 </head>
@@ -26,7 +26,6 @@
         <li><a href="#report">Report Issue</a></li>
         <li><a href="#tickets">Tickets</a></li>
         <li><a href="#reports">Reports</a></li>
-        <li><a href="#safety">Safety Guide</a></li>
       </ul>
     </nav>
   </header>
@@ -89,17 +88,13 @@
             </div>
             <div class="field">
               <label for="issue">Issue Description</label>
-              <textarea id="issue" name="issue" minlength="10" maxlength="500" rows="4" placeholder="Describe the fault, symptoms, and safety concerns..." required></textarea>
+              <textarea id="issue" name="issue" minlength="10" maxlength="500" rows="4" placeholder="Describe the fault and symptoms..." required></textarea>
             </div>
             <fieldset class="radio-group">
               <legend>Is immediate supervision needed?</legend>
               <label><input type="radio" name="supervision" value="Yes" required> Yes</label>
               <label><input type="radio" name="supervision" value="No"> No</label>
             </fieldset>
-            <label class="checkbox-label">
-              <input id="safety-confirmation" type="checkbox" required>
-              I confirm the affected equipment has been isolated and labeled.
-            </label>
             <button class="button primary" type="submit">Submit Maintenance Ticket</button>
           </form>
         </article>
@@ -196,22 +191,6 @@
       </section>
     </aside>
 
-    <section id="safety" class="panel safety-panel" aria-labelledby="safety-heading">
-      <article>
-        <h2 id="safety-heading">Lab Safety &amp; Equipment Guide</h2>
-        <p>Review the guide before isolating faulty equipment or beginning an inspection.</p>
-        <!-- Multimedia element with fallback text -->
-        <video controls width="640" preload="metadata" aria-label="Laboratory safety guide">
-          <source src="lab-safety-guide.mp4" type="video/mp4">
-          Your browser does not support HTML5 video. Use the lab safety checklist below.
-        </video>
-        <ol class="safety-list">
-          <li>Stop use and isolate unsafe equipment.</li>
-          <li>Post a warning label with the ticket ID.</li>
-          <li>Contact the lab supervisor for hazardous conditions.</li>
-        </ol>
-      </article>
-    </section>
   </main>
 
   <footer>

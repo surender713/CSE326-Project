@@ -11,7 +11,6 @@ A browser-based laboratory equipment maintenance dashboard. Users can report equ
 - Verify resolved tickets before closing them.
 - View ticket totals, open and closed counts, critical issues, and location breakdowns.
 - Print the analytics summary.
-- Review the laboratory safety checklist and optional safety video.
 
 ## Run locally
 
@@ -31,7 +30,7 @@ Use **Reset sample data** to restore the five example tickets. Use **Print Summa
 
 ## Project files
 
-- `index.html` — page structure, forms, ticket table, details panel, reports, and safety guide.
+- `index.html` — page structure, forms, ticket table, details panel, and reports.
 - `styles.css` — responsive layout, visual styling, accessibility states, and print styles.
 - `script.js` — ticket management, validation, filtering, local storage, reporting, and UI interactions.
 
