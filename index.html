@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- SEO and responsive metadata -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Track laboratory equipment faults, repairs, technician assignments, and maintenance reports.">
+  <meta name="keywords" content="laboratory maintenance, equipment repair, maintenance tickets, lab safety">
+  <title>Laboratory Maintenance Reporting System</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Semantic header and sticky navigation -->
+  <header class="site-header">
+    <nav class="navbar" aria-label="Primary navigation">
+      <a class="brand" href="#top" aria-label="Laboratory Maintenance Reporting System home">
+        <svg class="brand-logo" width="42" height="42" viewBox="0 0 42 42" role="img" aria-labelledby="logo-title">
+          <title id="logo-title">Laboratory logo</title>
+          <circle cx="21" cy="21" r="20" fill="#e6f4f1"></circle>
+          <path d="M16 8h10v3h-2v9l8 10v4H10v-4l8-10v-9h-2V8z" fill="#157a6e"></path>
+          <circle cx="17" cy="29" r="2" fill="#f59e0b"></circle>
+        </svg>
+        <span>Lab Maintenance</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="#report">Report Issue</a></li>
+        <li><a href="#tickets">Tickets</a></li>
+        <li><a href="#reports">Reports</a></li>
+        <li><a href="#safety">Safety Guide</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="top" class="page-grid">
+    <div class="main-column">
+      <section id="report" class="panel" aria-labelledby="report-heading">
+        <article>
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">New request</p>
+              <h1 id="report-heading">Report Lab Equipment Issue</h1>
+            </div>
+          </div>
+
+          <!-- Labels are explicitly paired with controls; HTML5 validation is used -->
+          <form id="ticket-form">
+            <div class="form-row">
+              <div class="field">
+                <label for="equipment">Equipment Name / ID</label>
+                <input id="equipment" name="equipment" type="text" minlength="3" maxlength="60" pattern="[A-Za-z0-9][A-Za-z0-9 -]*" placeholder="e.g., Microscope MS-04" required>
+              </div>
+              <div class="field">
+                <label for="location">Lab Location</label>
+                <select id="location" name="location" required>
+                  <option value="">Choose a lab</option>
+                  <option>Chemistry Lab</option>
+                  <option>Physics Lab</option>
+                  <option>Computer Lab</option>
+                  <option>Biology Lab</option>
+                  <option>Facilities</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="field">
+                <label for="priority">Priority</label>
+                <select id="priority" name="priority" required>
+                  <option value="">Choose priority</option>
+                  <option>Low</option>
+                  <option>Medium</option>
+                  <option>High</option>
+                  <option>Critical</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="reporter">Reporter Name</label>
+                <input id="reporter" name="reporter" type="text" minlength="2" maxlength="50" placeholder="Full name" required>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="field">
+                <label for="reporter-email">Reporter Email <span class="optional">(optional)</span></label>
+                <input id="reporter-email" name="reporterEmail" type="email" maxlength="80" placeholder="name@example.com">
+              </div>
+              <div class="field">
+                <label for="date-reported">Date Reported</label>
+                <input id="date-reported" name="dateReported" type="date" required>
+              </div>
+            </div>
+            <div class="field">
+              <label for="issue">Issue Description</label>
+              <textarea id="issue" name="issue" minlength="10" maxlength="500" rows="4" placeholder="Describe the fault, symptoms, and safety concerns..." required></textarea>
+            </div>
+            <fieldset class="radio-group">
+              <legend>Is immediate supervision needed?</legend>
+              <label><input type="radio" name="supervision" value="Yes" required> Yes</label>
+              <label><input type="radio" name="supervision" value="No"> No</label>
+            </fieldset>
+            <label class="checkbox-label">
+              <input id="safety-confirmation" type="checkbox" required>
+              I confirm the affected equipment has been isolated and labeled.
+            </label>
+            <button class="button primary" type="submit">Submit Maintenance Ticket</button>
+          </form>
+        </article>
+      </section>
+
+      <section id="tickets" class="panel" aria-labelledby="tickets-heading">
+        <article>
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Live queue</p>
+              <h2 id="tickets-heading">Maintenance Tickets</h2>
+            </div>
+            <button id="reset-button" class="button ghost" type="button">Reset sample data</button>
+          </div>
+
+          <div class="filters" aria-label="Ticket filters">
+            <div class="field search-field">
+              <label for="search">Search tickets</label>
+              <input id="search" type="search" placeholder="Equipment, ID, or description">
+            </div>
+            <div class="field">
+              <label for="status-filter">Status</label>
+              <select id="status-filter">
+                <option value="All">All statuses</option>
+                <option>Open</option>
+                <option>In Progress</option>
+                <option>Resolved</option>
+                <option>Closed</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="priority-filter">Priority</label>
+              <select id="priority-filter">
+                <option value="All">All priorities</option>
+                <option>Low</option>
+                <option>Medium</option>
+                <option>High</option>
+                <option>Critical</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="location-filter">Location</label>
+              <select id="location-filter">
+                <option value="All">All locations</option>
+                <option>Chemistry Lab</option>
+                <option>Physics Lab</option>
+                <option>Computer Lab</option>
+                <option>Biology Lab</option>
+                <option>Facilities</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">Ticket</th>
+                  <th scope="col">Equipment</th>
+                  <th scope="col">Location</th>
+                  <th scope="col">Priority</th>
+                  <th scope="col">Assigned Technician</th>
+                  <th scope="col">Status</th>
+                  <th scope="col">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="ticket-table-body"></tbody>
+            </table>
+          </div>
+          <p id="table-result-count" class="result-count" aria-live="polite"></p>
+        </article>
+      </section>
+    </div>
+
+    <!-- Complementary area demonstrates aside and ticket details -->
+    <aside class="side-column" aria-label="Selected ticket and reports">
+      <section id="ticket-detail" class="panel detail-panel" aria-labelledby="detail-heading">
+        <h2 id="detail-heading">Ticket Details</h2>
+        <div id="ticket-detail-content">
+          <p>Select a ticket to view assignment, history, comments, and closure controls.</p>
+        </div>
+      </section>
+
+      <section id="reports" class="panel" aria-labelledby="reports-heading">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Analytics</p>
+            <h2 id="reports-heading">Reports &amp; Analytics</h2>
+          </div>
+          <button id="print-button" class="button ghost" type="button">Print Summary</button>
+        </div>
+        <div id="report-cards" class="report-cards"></div>
+        <div id="location-breakdown" class="breakdown"></div>
+      </section>
+    </aside>
+
+    <section id="safety" class="panel safety-panel" aria-labelledby="safety-heading">
+      <article>
+        <h2 id="safety-heading">Lab Safety &amp; Equipment Guide</h2>
+        <p>Review the guide before isolating faulty equipment or beginning an inspection.</p>
+        <!-- Multimedia element with fallback text -->
+        <video controls width="640" preload="metadata" aria-label="Laboratory safety guide">
+          <source src="lab-safety-guide.mp4" type="video/mp4">
+          Your browser does not support HTML5 video. Use the lab safety checklist below.
+        </video>
+        <ol class="safety-list">
+          <li>Stop use and isolate unsafe equipment.</li>
+          <li>Post a warning label with the ticket ID.</li>
+          <li>Contact the lab supervisor for hazardous conditions.</li>
+        </ol>
+      </article>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2026 Laboratory Maintenance Reporting System</p>
+  </footer>
+
+  <!-- Accessible status announcements -->
+  <div id="status-message" class="status-message" role="status" aria-live="polite"></div>
+  <script src="script.js"></script>
+</body>
+</html>
