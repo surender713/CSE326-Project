@@ -10,7 +10,6 @@ A browser-based laboratory equipment maintenance dashboard. Users can report equ
 - Assign technicians and update ticket statuses.
 - Verify resolved tickets before closing them.
 - View ticket totals, open and closed counts, critical issues, and location breakdowns.
-- Print the analytics summary.
 
 ## Run locally
 
@@ -22,9 +21,11 @@ No build tools or dependencies are required.
 
 For the most consistent browser behavior, serve the folder with any local static web server and open the provided local URL.
 
+If the page appears unusually small, reset the browser zoom to 100% (Ctrl+0 on Windows/Linux or Command+0 on macOS).
+
 ## Data storage
 
-Ticket data is stored in the browser's `localStorage` under the key `labMaintenanceTickets`. Data is local to the browser and device; it is not synchronized to a server or shared with other users.
+Ticket data is stored in the browser's `localStorage` under the key `labMaintenanceTickets`. Data is local to the browser and device; it is not synchronized to a server or shared with other users. The sample tickets are loaded only when no saved tickets exist; there is no in-app reset control.
 
 ## How the app works
 
@@ -49,12 +50,12 @@ The HTML supplies stable element IDs for JavaScript to update. Event listeners a
 
 The page uses semantic landmarks such as `header`, `nav`, `main`, `section`, `aside`, and `footer` to describe its structure. Form labels are associated with their inputs, and required fields use native browser validation. The status message uses `role="status"` and `aria-live="polite"` so assistive technologies can announce updates.
 
-The CSS starts with a two-column desktop layout. At 980px, the main content stacks while the supplementary panels stay side by side; at 720px, forms, filters, and supplementary panels stack; at 480px, navigation and report cards become more compact. The ticket table can scroll horizontally on narrow screens. Print styles hide interactive sections and leave the analytics summary available to print.
+The desktop layout places the issue form and supplementary panels side by side, with the ticket table spanning the full width below them. At 980px, the page becomes a single-column layout; at 720px, forms, filters, and supplementary panels stack; at 480px, navigation and report cards become more compact. The ticket table can scroll horizontally on narrow screens.
 
 ## Project files
 
 - `index.html` — page structure, forms, ticket table, details panel, and reports.
-- `styles.css` — responsive layout, visual styling, accessibility states, and print styles.
+- `styles.css` — responsive layout, visual styling, and accessibility states.
 - `script.js` — ticket management, validation, filtering, local storage, reporting, and UI interactions.
 
 ## Browser support
