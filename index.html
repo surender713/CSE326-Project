@@ -10,8 +10,9 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <!-- Semantic header and sticky navigation -->
+  <!-- The header holds the site identity and primary navigation. -->
   <header class="site-header">
+    <!-- Navigation links jump to the page's main sections. -->
     <nav class="navbar" aria-label="Primary navigation">
       <a class="brand" href="#top" aria-label="Laboratory Maintenance Reporting System home">
         <svg class="brand-logo" width="42" height="42" viewBox="0 0 42 42" role="img" aria-labelledby="logo-title">
@@ -22,6 +23,8 @@
         </svg>
         <span>Lab Maintenance</span>
       </a>
+      
+      
       <ul class="nav-links">
         <li><a href="#report">Report Issue</a></li>
         <li><a href="#tickets">Tickets</a></li>
@@ -30,19 +33,23 @@
     </nav>
   </header>
 
+  <!-- Main contains the primary tasks: reporting an issue and managing tickets. -->
   <main id="top" class="page-grid">
     <div class="main-column">
-      <section id="report" class="panel" aria-labelledby="report-heading">
+      <!-- Each section is a distinct feature with its own heading. -->
+      <section class="panel" aria-labelledby="report-heading">
+        <!-- Article groups the related issue-reporting content. -->
         <article>
-          <div class="section-heading">
+          <div id="report" class="section-heading">
             <div>
               <p class="eyebrow">New request</p>
               <h1 id="report-heading">Report Lab Equipment Issue</h1>
             </div>
           </div>
 
-          <!-- Labels are explicitly paired with controls; HTML5 validation is used -->
+          <!-- A form groups the inputs and uses built-in HTML validation. -->
           <form id="ticket-form">
+            <!-- FormData uses each control's name as the key when reading values. -->
             <div class="form-row">
               <div class="field">
                 <label for="equipment">Equipment Name / ID</label>
@@ -90,6 +97,7 @@
               <label for="issue">Issue Description</label>
               <textarea id="issue" name="issue" minlength="10" maxlength="500" rows="4" placeholder="Describe the fault and symptoms..." required></textarea>
             </div>
+            <!-- Fieldset and legend group the related supervision choices. -->
             <fieldset class="radio-group">
               <legend>Is immediate supervision needed?</legend>
               <label><input type="radio" name="supervision" value="Yes" required> Yes</label>
@@ -100,76 +108,80 @@
         </article>
       </section>
 
-      <section id="tickets" class="panel" aria-labelledby="tickets-heading">
-        <article>
-          <div class="section-heading">
-            <div>
-              <p class="eyebrow">Live queue</p>
-              <h2 id="tickets-heading">Maintenance Tickets</h2>
-            </div>
-            <button id="reset-button" class="button ghost" type="button">Reset sample data</button>
-          </div>
-
-          <div class="filters" aria-label="Ticket filters">
-            <div class="field search-field">
-              <label for="search">Search tickets</label>
-              <input id="search" type="search" placeholder="Equipment, ID, or description">
-            </div>
-            <div class="field">
-              <label for="status-filter">Status</label>
-              <select id="status-filter">
-                <option value="All">All statuses</option>
-                <option>Open</option>
-                <option>In Progress</option>
-                <option>Resolved</option>
-                <option>Closed</option>
-              </select>
-            </div>
-            <div class="field">
-              <label for="priority-filter">Priority</label>
-              <select id="priority-filter">
-                <option value="All">All priorities</option>
-                <option>Low</option>
-                <option>Medium</option>
-                <option>High</option>
-                <option>Critical</option>
-              </select>
-            </div>
-            <div class="field">
-              <label for="location-filter">Location</label>
-              <select id="location-filter">
-                <option value="All">All locations</option>
-                <option>Chemistry Lab</option>
-                <option>Physics Lab</option>
-                <option>Computer Lab</option>
-                <option>Biology Lab</option>
-                <option>Facilities</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th scope="col">Ticket</th>
-                  <th scope="col">Equipment</th>
-                  <th scope="col">Location</th>
-                  <th scope="col">Priority</th>
-                  <th scope="col">Assigned Technician</th>
-                  <th scope="col">Status</th>
-                  <th scope="col">Actions</th>
-                </tr>
-              </thead>
-              <tbody id="ticket-table-body"></tbody>
-            </table>
-          </div>
-          <p id="table-result-count" class="result-count" aria-live="polite"></p>
-        </article>
-      </section>
     </div>
 
-    <!-- Complementary area demonstrates aside and ticket details -->
+    <section class="panel ticket-panel" aria-labelledby="tickets-heading">
+      <!-- Article groups the ticket queue, filters, and result count. -->
+      <article>
+        <div id="tickets" class="section-heading">
+          <div>
+            <p class="eyebrow">Live queue</p>
+            <h2 id="tickets-heading">Maintenance Tickets</h2>
+          </div>
+        </div>
+
+        <div class="filters" aria-label="Ticket filters">
+          <div class="field search-field">
+            <label for="search">Search tickets</label>
+            <input id="search" type="search" placeholder="Equipment, ID, or description">
+          </div>
+          <div class="field">
+            <label for="status-filter">Status</label>
+            <select id="status-filter">
+              <option value="All">All statuses</option>
+              <option>Open</option>
+              <option>In Progress</option>
+              <option>Resolved</option>
+              <option>Closed</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="priority-filter">Priority</label>
+            <select id="priority-filter">
+              <option value="All">All priorities</option>
+              <option>Low</option>
+              <option>Medium</option>
+              <option>High</option>
+              <option>Critical</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="location-filter">Location</label>
+            <select id="location-filter">
+              <option value="All">All locations</option>
+              <option>Chemistry Lab</option>
+              <option>Physics Lab</option>
+              <option>Computer Lab</option>
+              <option>Biology Lab</option>
+              <option>Facilities</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Table presents each ticket as a row of related column values. -->
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <!-- scope="col" identifies these headers for assistive technology. -->
+                <th scope="col">Ticket</th>
+                <th scope="col">Equipment</th>
+                <th scope="col">Location</th>
+                <th scope="col">Priority</th>
+                <th scope="col">Assigned Technician</th>
+                <th scope="col">Status</th>
+                <th scope="col">Actions</th>
+              </tr>
+            </thead>
+            <!-- JavaScript fills this body with a row for each matching ticket. -->
+            <tbody id="ticket-table-body"></tbody>
+          </table>
+        </div>
+        <p id="table-result-count" class="result-count" aria-live="polite"></p>
+      </article>
+    </section>
+
+    <!-- Aside contains supplementary details and analytics alongside the main tasks. -->
     <aside class="side-column" aria-label="Selected ticket and reports">
       <section id="ticket-detail" class="panel detail-panel" aria-labelledby="detail-heading">
         <h2 id="detail-heading">Ticket Details</h2>
@@ -178,13 +190,12 @@
         </div>
       </section>
 
-      <section id="reports" class="panel" aria-labelledby="reports-heading">
-        <div class="section-heading">
+      <section class="panel" aria-labelledby="reports-heading">
+        <div id="reports" class="section-heading">
           <div>
             <p class="eyebrow">Analytics</p>
             <h2 id="reports-heading">Reports &amp; Analytics</h2>
           </div>
-          <button id="print-button" class="button ghost" type="button">Print Summary</button>
         </div>
         <div id="report-cards" class="report-cards"></div>
         <div id="location-breakdown" class="breakdown"></div>
@@ -193,12 +204,14 @@
 
   </main>
 
+  <!-- Footer contains page-wide closing information. -->
   <footer>
     <p>&copy; 2026 Laboratory Maintenance Reporting System</p>
   </footer>
 
-  <!-- Accessible status announcements -->
+  <!-- role=status and aria-live announce JavaScript feedback to screen readers. -->
   <div id="status-message" class="status-message" role="status" aria-live="polite"></div>
+  <!-- Load behavior after the page markup so the script can find its elements. -->
   <script src="script.js"></script>
 </body>
 </html>

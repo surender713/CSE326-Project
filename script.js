@@ -107,6 +107,7 @@ const sampleTickets = [
 let tickets = loadTickets();
 let selectedTicketId = null;
 
+// Restore saved tickets; use a fresh copy of the samples when no valid save exists.
 function loadTickets() {
   const saved = localStorage.getItem(STORAGE_KEY);
   if (saved) {
@@ -116,15 +117,18 @@ function loadTickets() {
       localStorage.removeItem(STORAGE_KEY);
     }
   }
+  // Clone the fixtures so edits to live tickets never change the sample data.
   return sampleTickets.map(function (ticket) {
     return JSON.parse(JSON.stringify(ticket));
   });
 }
 
+// Keep the current ticket list in the browser so it survives a page reload.
 function saveTickets() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(tickets));
 }
 
+// Show a temporary message in the page's accessible status area.
 function showStatus(message) {
   const status = document.getElementById("status-message");
   status.textContent = message;
@@ -134,12 +138,14 @@ function showStatus(message) {
   }, 2600);
 }
 
+// Convert a date value into a short, readable date for ticket details.
 function formatDate(dateString) {
   if (!dateString) return "Not set";
   const date = new Date(dateString + "T00:00:00");
   return date.toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" });
 }
 
+// Create the timestamp format used in ticket history and comments.
 function formatTimestamp(date) {
   const now = date || new Date();
   const year = now.getFullYear();
@@ -150,6 +156,7 @@ function formatTimestamp(date) {
   return year + "-" + month + "-" + day + " " + hours + ":" + minutes;
 }
 
+// Find the largest existing ticket number and return the next one.
 function getNextTicketId() {
   const numbers = tickets.map(function (ticket) {
     return Number(ticket.id.replace("LAB-", ""));
@@ -160,6 +167,7 @@ function getNextTicketId() {
   return "LAB-" + (highest + 1);
 }
 
+// Validate the report form, create a ticket, then refresh the page sections.
 function createTicket(event) {
   event.preventEvent ? event.preventEvent() : event.preventDefault();
   const form = event.target;
@@ -170,6 +178,7 @@ function createTicket(event) {
     return;
   }
 
+  // FormData reads each control by its HTML name attribute.
   const data = new FormData(form);
   const ticket = {
     id: getNextTicketId(),
@@ -201,12 +210,14 @@ function createTicket(event) {
   showStatus(ticket.id + " submitted successfully.");
 }
 
+// Apply the search text and all selected filters to the ticket list.
 function getFilteredTickets() {
   const searchText = document.getElementById("search").value.trim().toLowerCase();
   const statusFilter = document.getElementById("status-filter").value;
   const priorityFilter = document.getElementById("priority-filter").value;
   const locationFilter = document.getElementById("location-filter").value;
 
+  // Returning true for every match makes the active filters combine with AND.
   return tickets.filter(function (ticket) {
     const searchable = (ticket.id + " " + ticket.equipment + " " + ticket.issue + " " + ticket.reporter).toLowerCase();
     const matchesSearch = searchText === "" || searchable.includes(searchText);
@@ -217,6 +228,7 @@ function getFilteredTickets() {
   });
 }
 
+// Build the visible table rows from the currently filtered tickets.
 function renderTickets() {
   const tableBody = document.getElementById("ticket-table-body");
   const filtered = getFilteredTickets();
@@ -242,6 +254,7 @@ function renderTickets() {
     filtered.length + " of " + tickets.length + " tickets displayed";
 }
 
+// Assign a technician and record the assignment in the repair history.
 function assignTechnician(ticketId, technicianName) {
   const ticket = tickets.find(function (item) {
     return item.id === ticketId;
@@ -268,6 +281,7 @@ function assignTechnician(ticketId, technicianName) {
   showStatus("Technician assigned to " + ticketId + ".");
 }
 
+// Change a ticket's status; closing requires the separate verification flow.
 function updateStatus(ticketId, newStatus) {
   const ticket = tickets.find(function (item) {
     return item.id === ticketId;
@@ -298,6 +312,7 @@ function updateStatus(ticketId, newStatus) {
   showStatus(ticket.id + " status updated to " + newStatus + ".");
 }
 
+// Add a comment to the ticket and preserve it in the repair history.
 function addComment(ticketId, text) {
   const ticket = tickets.find(function (item) {
     return item.id === ticketId;
@@ -325,6 +340,7 @@ function addComment(ticketId, text) {
   showStatus("Comment added to " + ticketId + ".");
 }
 
+// Close a resolved ticket only after supervisor details and confirmation are provided.
 function verifyAndCloseTicket(ticketId, supervisorName, confirmed) {
   const ticket = tickets.find(function (item) {
     return item.id === ticketId;
@@ -359,6 +375,7 @@ function verifyAndCloseTicket(ticketId, supervisorName, confirmed) {
   showStatus(ticketId + " has been closed and verified.");
 }
 
+// Render the selected ticket's details, history, comments, and available controls.
 function renderTicketDetail() {
   const container = document.getElementById("ticket-detail-content");
   const ticket = tickets.find(function (item) {
@@ -379,6 +396,7 @@ function renderTicketDetail() {
       }).join("")
     : "<li>No comments yet.</li>";
 
+  // Replace the previous details markup with the selected ticket's current data.
   container.innerHTML = `
     <h3>${ticket.id} - ${ticket.equipment}</h3>
     <p>${ticket.issue}</p>
@@ -438,6 +456,7 @@ function renderTicketDetail() {
   }
 }
 
+// Recalculate the summary cards and per-location report from all tickets.
 function generateReport() {
   const total = tickets.length;
   const openCount = tickets.filter(function (ticket) {
@@ -462,6 +481,7 @@ function generateReport() {
       return ticket.location === location;
     }).length;
     const percentage = total === 0 ? 0 : Math.round((count / total) * 100);
+    // Pass the share to CSS as a custom property for the breakdown bar width.
     return `
       <div class="breakdown-row">
         <span>${location}</span><strong>${count}</strong>
@@ -473,27 +493,9 @@ function generateReport() {
     "<h3>Tickets by Lab Location</h3>" + locationRows;
 }
 
-function resetData() {
-  const confirmed = window.confirm("Restore all five sample tickets?");
-  if (!confirmed) return;
-  tickets = sampleTickets.map(function (ticket) {
-    return JSON.parse(JSON.stringify(ticket));
-  });
-  selectedTicketId = null;
-  saveTickets();
-  renderTickets();
-  renderTicketDetail();
-  generateReport();
-  showStatus("Sample data restored.");
-}
-
-// Event listeners keep the beginner-friendly logic centralized.
+// Connect form and button actions to their handlers; delegation also handles
+// buttons that are recreated whenever ticket details or table rows are rendered.
 document.getElementById("ticket-form").addEventListener("submit", createTicket);
-document.getElementById("reset-button").addEventListener("reset", resetData);
-document.getElementById("reset-button").addEventListener("click", resetData);
-document.getElementById("print-button").addEventListener("click", function () {
-  window.print();
-});
 
 ["search", "status-filter", "priority-filter", "location-filter"].forEach(function (id) {
   document.getElementById(id).addEventListener("input", renderTickets);
@@ -521,6 +523,7 @@ document.getElementById("ticket-detail-content").addEventListener("change", func
   }
 });
 
+// Set today's date and render the initial ticket list, details, and report.
 document.getElementById("date-reported").value = new Date().toISOString().slice(0, 10);
 renderTickets();
 renderTicketDetail();
